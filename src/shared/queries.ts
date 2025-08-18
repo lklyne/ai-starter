@@ -29,4 +29,25 @@ export const queries = queriesWithContext({
 
     return sess ? q : q.where(alwaysFalse);
   },
+
+  // Get all notes for the current user
+  userNotes(sess: Session | null) {
+    let q = builder.note
+      .where("userId", "IS", sess?.user.id ?? null)
+      .related("user")
+      .orderBy("createdAt", "desc");
+
+    return sess ? q : q.where(alwaysFalse);
+  },
+
+  // Get a specific note by ID (only if owned by current user)
+  noteById(sess: Session | null, noteId: string) {
+    let q = builder.note
+      .where("id", "=", noteId)
+      .where("userId", "IS", sess?.user.id ?? null)
+      .related("user")
+      .one();
+
+    return sess ? q : q.where(alwaysFalse);
+  },
 });

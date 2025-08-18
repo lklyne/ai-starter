@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { signIn } from "../client/auth";
+import { signIn, signUp } from "../client/auth";
 
 export function LoginForm() {
+  const [isSignUp, setIsSignUp] = useState(false);
   const [loggingIn, setLoggingIn] = useState(false);
   const [error, setError] = useState<string>();
   async function githubLogin() {
@@ -22,7 +23,7 @@ export function LoginForm() {
     }
   }
 
-  async function emailLogin(event: React.FormEvent<HTMLFormElement>) {
+  async function handleEmailSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (loggingIn) {
       return;
@@ -33,6 +34,8 @@ export function LoginForm() {
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
+    const name = formData.get("name") as string;
+    
     if (!email) {
       setLoggingIn(false);
       setError("Email is required");
@@ -43,10 +46,22 @@ export function LoginForm() {
       setError("Password is required");
       return;
     }
-    const response = await signIn.email({
-      email,
-      password,
-    });
+    if (isSignUp && !name) {
+      setLoggingIn(false);
+      setError("Name is required");
+      return;
+    }
+
+    const response = isSignUp 
+      ? await signUp.email({
+          email,
+          password,
+          name,
+        })
+      : await signIn.email({
+          email,
+          password,
+        });
 
     if (response.error) {
       setLoggingIn(false);
@@ -58,16 +73,30 @@ export function LoginForm() {
   return (
     <div className="card w-full max-w-md">
       {error && <div className="text-error">{error}</div>}
-      <h2 className="text-lg font-semibold mb-4">Login to Your Account</h2>
-      <form className="space-y-4" onSubmit={emailLogin}>
+      <h2 className="text-lg font-semibold mb-4">
+        {isSignUp ? "Create Your Account" : "Login to Your Account"}
+      </h2>
+      <form className="space-y-4" onSubmit={handleEmailSubmit}>
         <div>
-          <label className="block mb-1 text-xs font-medium text-heading">
+          {isSignUp && (
+            <>
+              <label className="block mb-1 text-xs font-medium text-heading">
+                Name
+              </label>
+              <input type="text" name="name" className="input" placeholder="your name" />
+            </>
+          )}
+          <label className="block mb-1 text-xs font-medium text-heading mt-2">
             Email
           </label>
-          <input type="email" className="input" placeholder="email" />
+          <input type="email" name="email" className="input" placeholder="email" />
+          <label className="block mb-1 text-xs font-medium text-heading mt-2">
+            Password
+          </label>
           <input
             type="password"
-            className="input mt-2"
+            name="password"
+            className="input"
             placeholder="password"
           />
         </div>
@@ -76,7 +105,7 @@ export function LoginForm() {
           type="submit"
           className="btn btn-primary w-full"
         >
-          Login with Email
+          {isSignUp ? "Sign Up with Email" : "Login with Email"}
         </button>
       </form>
       <div className="text-center text-sm text-muted my-4">or</div>
@@ -95,6 +124,19 @@ export function LoginForm() {
         </svg>
         Continue with GitHub
       </button>
+      
+      <div className="text-center mt-4">
+        <button
+          type="button"
+          className="text-sm text-blue-600 hover:text-blue-800 underline"
+          onClick={() => {
+            setIsSignUp(!isSignUp);
+            setError(undefined);
+          }}
+        >
+          {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign up"}
+        </button>
+      </div>
     </div>
   );
 }

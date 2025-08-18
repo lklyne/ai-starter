@@ -1,11 +1,15 @@
 // src/routes/index.tsx
-import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import {createFileRoute} from '@tanstack/react-router';
+import {Link} from '@tanstack/react-router';
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
   component: Home,
 });
 
 function Home() {
-  return <div className="flex h-screen">Placeholder content. Remove me.</div>;
+  return (
+    <div className="flex h-screen items-center align-middle">
+      Placeholder content. Remove me.
+    </div>
+  );
 }

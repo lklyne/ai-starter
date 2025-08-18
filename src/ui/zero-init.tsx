@@ -9,7 +9,8 @@ export function ZeroInit({ children }: { children: ReactNode }) {
 
   let server: string | null = null;
   if (typeof window !== "undefined") {
-    server = window.location.origin;
+    // Connect through the proxy server which routes /sync to Zero cache
+    server = "http://localhost:8080";
   }
 
   const props = useMemo(() => {

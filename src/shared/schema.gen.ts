@@ -160,6 +160,69 @@ export const schema = {
       },
       primaryKey: ["id"],
     },
+    note: {
+      name: "note",
+      columns: {
+        id: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            ZeroSchema,
+            "note",
+            "id"
+          >,
+        },
+        title: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            ZeroSchema,
+            "note",
+            "title"
+          >,
+        },
+        content: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            ZeroSchema,
+            "note",
+            "content"
+          >,
+        },
+        userId: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            ZeroSchema,
+            "note",
+            "userId"
+          >,
+          serverName: "user_id",
+        },
+        createdAt: {
+          type: "number",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            ZeroSchema,
+            "note",
+            "createdAt"
+          >,
+          serverName: "created_at",
+        },
+        updatedAt: {
+          type: "number",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            ZeroSchema,
+            "note",
+            "updatedAt"
+          >,
+          serverName: "updated_at",
+        },
+      },
+      primaryKey: ["id"],
+    },
     session: {
       name: "session",
       columns: {
@@ -391,6 +454,16 @@ export const schema = {
         },
       ],
     },
+    note: {
+      user: [
+        {
+          sourceField: ["userId"],
+          destField: ["id"],
+          destSchema: "user",
+          cardinality: "one",
+        },
+      ],
+    },
     session: {
       user: [
         {
@@ -415,6 +488,14 @@ export const schema = {
           sourceField: ["id"],
           destField: ["userId"],
           destSchema: "account",
+          cardinality: "many",
+        },
+      ],
+      notes: [
+        {
+          sourceField: ["id"],
+          destField: ["userId"],
+          destSchema: "note",
           cardinality: "many",
         },
       ],

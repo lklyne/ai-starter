@@ -6,7 +6,6 @@ import {
   createRootRoute,
   HeadContent,
   Scripts,
-  ClientOnly,
 } from "@tanstack/react-router";
 
 import theme from "@/styles/theme.css?url";
@@ -35,11 +34,9 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <RootDocument>
-      <ClientOnly fallback={<div>Loading...</div>}>
-        <ZeroInit>
-          <Outlet />
-        </ZeroInit>
-      </ClientOnly>
+      <ZeroInit>
+        <Outlet />
+      </ZeroInit>
     </RootDocument>
   );
 }

@@ -23,9 +23,5 @@ export function ZeroInit({ children }: { children: ReactNode }) {
     } as const;
   }, [data?.user?.id]);
 
-  if (server == null) {
-    return <div>Loading...</div>;
-  }
-
   return <ZeroProvider {...props}>{children}</ZeroProvider>;
 }

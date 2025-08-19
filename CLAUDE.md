@@ -19,6 +19,8 @@ Outside of these libraries, you must **not** pull in any additional libraries th
 
 These frameworks have already been configured for you and a project scaffolding set up. As you continue to add features and develop the application, feel free to update this file with information that will be handy to you in the future.
 
+As a guiding rule, you should **not** introduce any loading UI. The current setup should support next-frame navigation and data mutations. If loading UI is absolutely required, explain why.
+
 ## Project Structure
 
 ```
